@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package api.tag.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "realworld/api/tag/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.tag.v1";
+
+service Tag {
+  rpc GetTags (GetTagRequest) returns (GetTagReply) {
+    option (google.api.http) = {
+      get: "/api/tags",
+    };
+  }
+}
+
+message GetTagRequest {}
+message GetTagReply {
+  repeated string tags = 1;
+}

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package api.user.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "realworld/api/user/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.user.v1";
+
+service User {
+	rpc GetCurrentUser (GetCurrentUserRequest) returns (GetCurrentUserReply) {
+    option (google.api.http) = {
+      get: "/api/user",
+    };
+  }
+	rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply) {
+    option (google.api.http) = {
+      put: "/api/user",
+      body: "*"
+    };
+  }
+}
+
+message GetCurrentUserRequest {}
+message GetCurrentUserReply {
+  message User {
+    string email = 1;
+    string token = 2;
+    string username = 3;
+    string bio = 4;
+    string image = 5;
+  }
+
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  message User {
+      string email = 1;
+      string bio = 2;
+      string image = 3;
+  }
+
+  User user = 1;
+}
+message UpdateUserReply {
+  message User {
+    string email = 1;
+    string token = 2;
+    string username = 3;
+    string bio = 4;
+    string image = 5;
+  }
+
+  User user = 1;
+}

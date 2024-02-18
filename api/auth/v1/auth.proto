@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package api.auth.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "realworld/api/auth/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.auth.v1";
+
+service Auth {
+	rpc Register (RegisterRequest) returns (RegisterReply){
+    option (google.api.http) = {
+      post: "/api/users",
+      body: "*",
+    };
+  }
+	rpc Login (LoginRequest) returns (LoginReply) {
+    option (google.api.http) = {
+      post: "/api/users/login",
+      body: "*",
+    };
+  }
+}
+
+message RegisterRequest {
+  message Data {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+  }
+  Data user = 1;
+}
+message RegisterReply {
+  message User {
+    string email = 1;
+    string token = 2;
+    string username = 3;
+    string bio = 4;
+    string image = 5;
+  }
+
+  User user = 1;
+}
+
+message LoginRequest {
+  message UserLogin {
+    string email = 1;
+    string password = 2;
+  }
+
+  UserLogin user = 1;
+}
+
+message LoginReply {
+  message User {
+    string email = 1;
+    string token = 2;
+    string username = 3;
+    string bio = 4;
+    string image = 5;
+  }
+
+  User user = 1;
+}

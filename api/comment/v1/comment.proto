@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package api.comment.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "realworld/api/comment/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.comment.v1";
+
+service Comment {
+	rpc AddCommentsToAnArticle (AddCommentsToAnArticleRequest) returns (CommentReply) {
+    option (google.api.http) = {
+      post: "/api/articles/{slug}/comments",
+      body: "*",
+    };
+  }
+
+	rpc GetCommentsFromAnArticle (GetCommentsRequest) returns (MultipleComments) {
+    option (google.api.http) = {
+      get: "/api/articles/{slug}/comments",
+    };
+  }
+
+	rpc DeleteComment (DeleteCommentRequest) returns (DeleteCommentReply) {
+    option (google.api.http) = {
+      delete: "/api/articles/{slug}/comments/{id}",
+    };
+  }
+}
+
+message AddCommentsToAnArticleRequest {
+  message CommentRequest {
+    string body = 1;
+  }
+
+  CommentRequest comment = 1;
+  string slug = 2;
+}
+
+message CommentReply {
+  message Author {
+    string username = 1;
+    string bio = 2;
+    string image = 3;
+    bool following = 4;
+  }
+  message Comment {
+    int64 id = 1;
+    google.protobuf.Timestamp createdAt = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+    string body = 4;
+    Author author = 5;
+  }
+
+  Comment comment = 1;
+}
+
+message GetCommentsRequest {
+  string slug = 1;
+}
+message MultipleComments {
+  message Author {
+    string username = 1;
+    string bio = 2;
+    string image = 3;
+    bool following = 4;
+  }
+  message Comments {
+    uint32 id = 1;
+    google.protobuf.Timestamp createdAt = 2;
+    google.protobuf.Timestamp updatedAt = 3;
+    string body = 4;
+    Author author = 5;
+  }
+
+  repeated Comments comments = 1;
+}
+
+message DeleteCommentRequest {
+  string slug = 1;
+  int64 id = 2;
+}
+message DeleteCommentReply {}
